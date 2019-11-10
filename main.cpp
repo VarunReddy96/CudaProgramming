@@ -1,9 +1,4 @@
 #include <iostream>
-
-#define ciphermessagescount = 100;
-
-__managed__ unsigned int messagenum;
-
 using namespace std;
 
 int main(int argc, char **argv) {
@@ -18,13 +13,6 @@ int main(int argc, char **argv) {
 
     unsigned long long modulus = stoull(argv[2]);
     int cipher = stoi(argv[1]);
-
-
-    //cout << "val of cipher is " <<cipher;
-    //  cout << "Hello, World!" << endl;
-// to read the values use cin
-    //int age;
-    //cin >> age;
 
 
     int count = 0;
