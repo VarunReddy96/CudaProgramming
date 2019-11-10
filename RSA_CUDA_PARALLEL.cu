@@ -19,8 +19,8 @@ void breakingrsa(unsigned long long ciphertext,unsigned long long int n,unsigned
         }
         if(val==ciphertext && messagenum < ciphermessagescount){
             messagelist[atomicAdd(&messagenum, 1)] = i; // Here atomicAdd is used to perform the addition of the RSA messages which are decoded.
-            // This  is done by performing atomic addition i,e either it increases the values in the
-            // mentioned address or it doesnt and prevents the value from interleaving.
+                                                        // This  is done by performing atomic addition i,e either it increases the values in the
+                                                        // mentioned address or it doesnt and prevents the value from interleaving.
         }
     }
 }

@@ -6,7 +6,8 @@ __managed__ unsigned int messagenum = 0;
 using namespace std;
 
 // kernal function takes in arguments cipher c, modulus n, messagelist(Which is shared betweeen host
-// and device in Unified memory).
+// and device in Unified memory). Because the number of threads and number of blocks in the grid are
+// 1 this task becomes similar to sequential.
 
 __global__
 void breakingrsa(unsigned long long ciphertext,unsigned long long int n,unsigned long long *messagelist, int ciphermessagescount){
@@ -19,8 +20,8 @@ void breakingrsa(unsigned long long ciphertext,unsigned long long int n,unsigned
         }
         if(val==ciphertext && messagenum < ciphermessagescount){
             messagelist[atomicAdd(&messagenum, 1)] = i; // Here atomicAdd is used to perform the addition of the RSA messages which are decoded.
-            // This  is done by performing atomic addition i,e either it increases the values in the
-            // mentioned address or it doesnt and prevents the value from interleaving.
+                                                        // This  is done by performing atomic addition i,e either it increases the values in the
+                                                        // mentioned address or it doesnt and prevents the value from interleaving.
         }
     }
 }
@@ -57,9 +58,7 @@ int main(int argc, char **argv) {
     int ciphermessagescount = 100;
     cudaMallocManaged(&messagelist,ciphermessagescount*sizeof(unsigned long long));
 
-    int threadsperblock = 256;
-    int totalblocks = (modulus+threadsperblock-1) / threadsperblock;
-    breakingrsa<<< totalblocks,threadsperblock >>>(cipher,modulus,messagelist,100);
+    breakingrsa<<< 1,1 >>>(cipher,modulus,messagelist,100);
 
     cudaDeviceSynchronize();
 
